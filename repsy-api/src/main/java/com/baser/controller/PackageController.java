@@ -8,7 +8,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 @RestController
@@ -20,6 +22,16 @@ public class PackageController {
     @Autowired
     public PackageController(StorageService storageService) {
         this.storageService = storageService;
+    }
+
+    @PostMapping(path = "/{packageName}/{version}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void uploadFile(
+            @PathVariable("packageName") String packageName,
+            @PathVariable("version") String version,
+            @RequestPart("packageFile") MultipartFile packageFile,
+            @RequestPart("metaFile") MultipartFile metaFile) throws IOException {
+        storageService.save(packageName, version, "package.rep", packageFile.getInputStream());
+        storageService.save(packageName, version, "meta.json", metaFile.getInputStream());
     }
 
     @GetMapping("/{packageName}/{version}/{fileName}")
