@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @RestController
-@RequestMapping("/packages")
+@RequestMapping("/api/v1/packages")
 public class PackageController {
 
     private final PackageService packageService;
@@ -24,7 +24,7 @@ public class PackageController {
         this.packageService = packageService;
     }
 
-    @PostMapping(path = "/{packageName}/{version}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/deploy/{packageName}/{version}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void uploadFile(
             @PathVariable("packageName") String packageName,
             @PathVariable("version") String version,
@@ -35,7 +35,7 @@ public class PackageController {
     }
 
 
-    @GetMapping("/{packageName}/{version}/{fileName}")
+    @GetMapping("/download/{packageName}/{version}/{fileName}")
     public ResponseEntity<InputStreamResource> downloadFile(
             @PathVariable("packageName") String packageName,
             @PathVariable("version") String version,

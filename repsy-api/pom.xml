@@ -4,12 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.baser</groupId>
-        <artifactId>repsy-package-app</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.4.5</version>
+        <relativePath/>
     </parent>
 
     <artifactId>repsy-api</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <groupId>com.baser</groupId>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -46,6 +49,22 @@
             <artifactId>postgresql</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -79,5 +98,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>repsy</id>
+            <name>My Private Maven Repository on Repsy</name>
+            <url>https://repo.repsy.io/mvn/kaanraghos/baser/</url>
+        </repository>
+    </repositories>
 
 </project>
