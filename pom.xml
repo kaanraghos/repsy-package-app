@@ -12,6 +12,7 @@
     <modules>
         <module>storage-api</module>
         <module>filesystem-storage</module>
+        <module>repsy-api</module>
     </modules>
 
     <properties>
