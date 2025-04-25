@@ -40,6 +40,7 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
     networks:
+      - postgres
       - spring
 #    healthcheck:
 #      test: [ "CMD", "curl", "-f", "http://localhost:8761/actuator/health" ]
@@ -51,6 +52,21 @@ services:
       postgres:
         condition: service_started
 
+  minio:
+    container_name: minio_repsy
+    image: minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"  # Admin paneli için
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    volumes:
+      - minio-data:/data
+    command: server --console-address ":9001" /data
+    networks:
+      - spring
+    restart: unless-stopped
 
 networks:
   postgres:
@@ -63,3 +79,4 @@ networks:
 volumes:
   postgres:
   pgadmin:
+  minio-data:
