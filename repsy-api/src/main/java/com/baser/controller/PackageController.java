@@ -1,7 +1,7 @@
 package com.baser.controller;
 
 
-import com.baser.storage.StorageService;
+import com.baser.service.PackageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -17,11 +17,11 @@ import java.io.InputStream;
 @RequestMapping("/packages")
 public class PackageController {
 
-    private final StorageService storageService;
+    private final PackageService packageService;
 
     @Autowired
-    public PackageController(StorageService storageService) {
-        this.storageService = storageService;
+    public PackageController(PackageService packageService) {
+        this.packageService = packageService;
     }
 
     @PostMapping(path = "/{packageName}/{version}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -30,16 +30,17 @@ public class PackageController {
             @PathVariable("version") String version,
             @RequestPart("packageFile") MultipartFile packageFile,
             @RequestPart("metaFile") MultipartFile metaFile) throws IOException {
-        storageService.save(packageName, version, "package.rep", packageFile.getInputStream());
-        storageService.save(packageName, version, "meta.json", metaFile.getInputStream());
+
+        packageService.savePackage(packageName, version, packageFile, metaFile);
     }
+
 
     @GetMapping("/{packageName}/{version}/{fileName}")
     public ResponseEntity<InputStreamResource> downloadFile(
             @PathVariable("packageName") String packageName,
             @PathVariable("version") String version,
             @PathVariable("fileName") String fileName) {
-        InputStream file = storageService.load(packageName, version, fileName);
+        InputStream file = packageService.load(packageName, version, fileName);
         InputStreamResource resource = new InputStreamResource(file);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM) // or other specific type if needed
